@@ -5,35 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Christmas Wishlist — Gallery</title>
   <meta name="description" content="A simple wishlist gallery for GitHub Pages" />
-  <style>
-    :root{--bg:#0f1724;--card:#0b1220;--muted:#94a3b8;--accent:#60a5fa}
-    *{box-sizing:border-box}
-    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:linear-gradient(180deg,#071029 0%, #071827 100%);color:#e6eef8;min-height:100vh}
-    .wrap{max-width:1100px;margin:36px auto;padding:20px}
-    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
-    header h1{margin:0;font-size:1.6rem}
-    header p{margin:0;color:var(--muted)}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
-    .card:hover{transform:translateY(-6px);box-shadow:0 18px 36px rgba(2,6,23,0.7)}
-    .thumb{width:100%;height:140px;object-fit:cover;display:block;background:#022}
-    .meta{padding:12px}
-    .title{font-weight:600;margin:0 0 6px 0}
-    .desc{margin:0;font-size:0.9rem;color:var(--muted);height:36px;overflow:hidden}
-    .badge{display:inline-block;margin-top:8px;padding:6px 8px;border-radius:999px;font-size:0.8rem;background:rgba(96,165,250,0.12);color:var(--accent)}
-    /* modal */
-    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center;padding:20px}
-    .modal{max-width:900px;width:100%;background:linear-gradient(180deg,#071227,#09172b);border-radius:12px;overflow:hidden;box-shadow:0 30px 60px rgba(2,6,23,0.7);display:grid;grid-template-columns:1fr 360px;gap:0}
-    @media(max-width:780px){.modal{grid-template-columns:1fr}.thumb-large{height:260px}}
-    .modal .left{padding:0}
-    .thumb-large{width:100%;height:420px;object-fit:cover;background:#012}
-    .modal .right{padding:18px}
-    .close{background:transparent;border:0;color:var(--muted);font-size:1rem;cursor:pointer}
-    .openlink{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:10px;background:var(--accent);color:#022;font-weight:600;text-decoration:none}
-    footer{margin-top:22px;color:var(--muted);font-size:0.9rem}
-    /* small helper for image placeholder */
-    .placeholder{display:flex;align-items:center;justify-content:center;height:140px;background:linear-gradient(90deg,#071e2d,#022034);color:var(--muted)}
-  </style>
 </head>
 <body>
   <div class="wrap">
@@ -73,87 +44,6 @@
     </div>
   </div>
 
-  <script>
-    // === EDIT THIS ARRAY ===
-    // For GitHub Pages (static), just edit this file in your repo to change the wishlist.
-    const items = [
-      {
-        "title":"Cozy Wool Scarf",
-        "description":"Handmade scarf — warm and soft.",
-        "image":"https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=1200&q=80",
-        "url":"https://example.com/scarf",
-        "tag":"Fashion"
-      },
-      {
-        "title":"Bluetooth Speaker",
-        "description":"Portable speaker with long battery life.",
-        "image":"https://images.unsplash.com/photo-1518444024151-3f0787a1a7b2?w=1200&q=80",
-        "url":"https://example.com/speaker",
-        "tag":"Gadgets"
-      },
-      {
-        "title":"Nice Mug",
-        "description":"A big ceramic mug for hot chocolate.",
-        "image":"https://images.unsplash.com/photo-1517685352821-92cf88aee5a5?w=1200&q=80",
-        "url":"https://example.com/mug",
-        "tag":"Home"
-      }
-    ];
-    // ==========================
-
-    const grid = document.getElementById('grid');
-    const backdrop = document.getElementById('backdrop');
-    const modalImage = document.getElementById('modalImage');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalDesc = document.getElementById('modalDesc');
-    const modalLink = document.getElementById('modalLink');
-    const modalMeta = document.getElementById('modalMeta');
-    const closeBtn = document.getElementById('closeBtn');
-
-    function makeCard(item, idx){
-      const card = document.createElement('article');
-      card.className = 'card';
-      card.tabIndex = 0;
-      card.innerHTML = `
-        ${item.image ? `<img loading="lazy" src="${item.image}" alt="${escapeHtml(item.title)}" class="thumb">` : `<div class="placeholder">No image</div>`}
-        <div class="meta">
-          <h4 class="title">${escapeHtml(item.title)}</h4>
-          <p class="desc">${escapeHtml(item.description || '')}</p>
-          ${item.tag ? `<div class="badge">${escapeHtml(item.tag)}</div>` : ''}
-        </div>`;
-      card.addEventListener('click', ()=>openModal(item));
-      card.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') openModal(item); });
-      return card;
-    }
-
-    function render(){
-      grid.innerHTML = '';
-      items.forEach((it, i)=>grid.appendChild(makeCard(it,i)));
-    }
-
-    function openModal(item){
-      modalImage.src = item.image || '';
-      modalImage.alt = item.title || '';
-      modalTitle.textContent = item.title || '';
-      modalDesc.textContent = item.description || '';
-      modalLink.href = item.url || '#';
-      modalMeta.textContent = item.tag ? `Category: ${item.tag}` : '';
-      backdrop.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal(){
-      backdrop.style.display = 'none';
-      document.body.style.overflow = '';
-    }
-
-    backdrop.addEventListener('click', (e)=>{ if(e.target === backdrop) closeModal(); });
-    closeBtn.addEventListener('click', closeModal);
-    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
-
-    function escapeHtml(s){ return String(s).replace(/[&<>"]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-
-    render();
-  </script>
+  <script src="script.js" defer></script>
 </body>
 </html>
